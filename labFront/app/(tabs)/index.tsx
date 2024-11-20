@@ -5,6 +5,7 @@ import { object, string, InferType } from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "expo-router";
+import axios from "axios";
 
 const schema = object({
   login: string().email().required(),
@@ -20,13 +21,19 @@ export default function MainScreen() {
     mode: "onTouched",
   })
 
-  const onSubmit = (request: LoginRequest) => {
-    console.log(request);
+  const onSubmit = async (request: LoginRequest) => {
+    try {
+      const { data } = await axios.post("/login", request);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
   return (
     <ThemedSaveAreaView>
-      <View className="flex items-center justify-center w-screen" style={{marginBottom:10}}>
+      <View className="flex justify-center" style={{ marginBottom: 10 }}>
         <ThemedText className="text-center" type="title">Login</ThemedText>
         <View className="flex gap-2">
           <View>
@@ -45,7 +52,7 @@ export default function MainScreen() {
               )}
             />
             {form.formState.errors.login?.message && (
-              <ThemedText style={{color: "red"}}>{form.formState.errors.login?.message}</ThemedText>
+              <ThemedText style={{ color: "red" }}>{form.formState.errors.login?.message}</ThemedText>
             )}
           </View>
           <View>
@@ -64,7 +71,7 @@ export default function MainScreen() {
               )}
             />
             {form.formState.errors.password?.message && (
-              <ThemedText style={{color: "red"}}>{form.formState.errors.password?.message}</ThemedText>
+              <ThemedText style={{ color: "red" }}>{form.formState.errors.password?.message}</ThemedText>
             )}
           </View>
         </View>

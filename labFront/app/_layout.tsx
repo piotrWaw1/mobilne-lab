@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import "../global.css"
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import axios from "axios";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().then();
 
@@ -16,6 +17,8 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
+
+  axios.defaults.baseURL = "http://192.168.0.100:5000/";
 
   useEffect(() => {
     if (loaded) {
