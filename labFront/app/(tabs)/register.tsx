@@ -29,10 +29,12 @@ export default function Register() {
     try {
       setIsLoading(true);
       const { data } = await axios.post("/register", request);
+      console.log(data)
       setMessage(data.message)
       form.reset()
     } catch (error) {
       if(axios.isAxiosError(error)){
+        console.log(error)
         setMessage(error.message)
       }
     } finally {

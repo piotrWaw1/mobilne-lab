@@ -30,8 +30,12 @@ export default function MainScreen() {
     try {
       setIsLoading(true);
       const { data } = await axios.post("/login", request);
-      await AsyncStorage.setItem('@jwt_token', data.access_token);
+      console.log(data)
+      if (data.access_token) {
+        await AsyncStorage.setItem('@jwt_token', data.access_token);
+      }
     } catch (error) {
+      console.log(error)
       if (axios.isAxiosError(error)) {
         setMessage(error.message)
       }
