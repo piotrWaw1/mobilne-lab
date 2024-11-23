@@ -1,7 +1,7 @@
 import sqlite3
 
 # Connect to the SQLite3 database (creates the file if it doesn't exist)
-conn = sqlite3.connect('user_database.db')
+conn = sqlite3.connect('data.db')
 
 # Create a cursor object to execute SQL commands
 cursor = conn.cursor()
@@ -9,6 +9,7 @@ cursor = conn.cursor()
 # SQL command to create user_table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS user_table (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     login TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL
 );

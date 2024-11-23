@@ -1,50 +1,49 @@
-import { ThemedText } from "@/components/ThemedText";
-import { Button, Pressable, TextInput, View } from "react-native";
-import ThemedSaveAreaView from "@/components/ThemedSaveAreaView";
-import { object, string, InferType } from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "expo-router";
 import axios from "axios";
+import ThemedSaveAreaView from "@/components/ThemedSaveAreaView";
+import { Button, Pressable, TextInput, View } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { Link } from "expo-router";
+import { InferType, object, string } from "yup";
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const schema = object({
   login: string().email().required(),
   password: string().required(),
 })
 
-type LoginRequest = InferType<typeof schema>;
+type RegisterRequest = InferType<typeof schema>;
 
-export default function MainScreen() {
+export default function Register() {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<string>()
 
-  const form = useForm<LoginRequest>({
+  const form = useForm<RegisterRequest>({
     resolver: yupResolver(schema),
     defaultValues: { login: "", password: "" },
     mode: "onTouched",
   })
 
-  const onSubmit = async (request: LoginRequest) => {
+  const onSubmit = async (request: RegisterRequest) => {
     try {
       setIsLoading(true);
-      const { data } = await axios.post("/login", request);
-      await AsyncStorage.setItem('@jwt_token', data.access_token);
+      const { data } = await axios.post("/register", request);
+      setMessage(data.message)
+      form.reset()
     } catch (error) {
-      if (axios.isAxiosError(error)) {
+      if(axios.isAxiosError(error)){
         setMessage(error.message)
       }
     } finally {
       setIsLoading(false);
     }
-
   }
 
   return (
     <ThemedSaveAreaView>
       <View className="flex justify-center" style={{ marginBottom: 10 }}>
-        <ThemedText className="text-center" type="title">Login</ThemedText>
+        <ThemedText className="text-center" type="title">Register</ThemedText>
         <View className="flex gap-2">
           <View>
             <ThemedText type="defaultSemiBold">Login</ThemedText>
@@ -86,12 +85,9 @@ export default function MainScreen() {
           </View>
         </View>
       </View>
-      <Button disabled={isLoading} onPress={form.handleSubmit(onSubmit)} title={"Login"}/>
-      <Pressable className="bg-blue-400 p-2" style={{ marginTop: 10 }}>
-        <Link className="text-center" href="/register">Register</Link>
-      </Pressable>
-      <Pressable className="bg-orange-400 p-2" style={{ marginTop: 10 }}>
-        <Link className="text-center" href="/profile">Profile</Link>
+      <Button disabled={isLoading} onPress={form.handleSubmit(onSubmit)} title={"Register"}/>
+      <Pressable className="bg-blue-300 p-2" style={{ marginTop: 10 }}>
+        <Link className="text-center" href="/">Login</Link>
       </Pressable>
       {
         message && <ThemedText>{message}</ThemedText>
