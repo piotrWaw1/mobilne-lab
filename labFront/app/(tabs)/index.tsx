@@ -97,6 +97,9 @@ export default function MainScreen() {
       <Pressable className="bg-orange-400 p-2" style={{ marginTop: 10 }}>
         <Link className="text-center" href="/profile">Profile</Link>
       </Pressable>
+      <Pressable className="bg-pink-400 p-2" style={{ marginTop: 10 }}>
+        <Link className="text-center" href="/add-data">Data</Link>
+      </Pressable>
       {
         message && <ThemedText>{message}</ThemedText>
       }
