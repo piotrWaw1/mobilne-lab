@@ -1,30 +1,36 @@
 import sqlite3
+import re
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
-app.config["JWT_SECRET_KEY"] = "secret_key"
+# app.config["JWT_SECRET_KEY"] = "secret_key"
 CORS(app)
 
-jwt = JWTManager(app)
+
+# jwt = JWTManager(app)
 
 
 @app.route('/login', methods=['POST'])
-def login():  # put application's code here
+def login():
     data = request.get_json()
     login = data.get('login')
     password = data.get('password')
+
+    if not re.match(r"^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,}$", login):
+        print("invalite email")
+        return jsonify({"error": "Invalid email format"}), 400
+
     with sqlite3.connect("data.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM user_table WHERE login = ?", (login,))
         user = cursor.fetchone()
         if user and password == user[2]:
-            access_token = create_access_token(identity=login)
-            return jsonify(access_token=access_token)
-        else:
-            return jsonify({"error": "User not found"}), 404
+            return jsonify({"message": "Welcome {}".format(login)})
+
+    return jsonify({"error": "User not found"}), 404
 
 
 @app.route('/register', methods=['POST'])
