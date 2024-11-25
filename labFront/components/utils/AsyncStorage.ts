@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 export const setItem = async (key: string, value: string) => {
   try {
@@ -7,6 +8,28 @@ export const setItem = async (key: string, value: string) => {
     console.error('Error setting item:', error);
   }
 };
+
+export const setItemSecure = async (key: string, value: string) => {
+  try {
+    await SecureStore.setItemAsync(key, value);
+  } catch (error) {
+    console.error('Error setting item:', error);
+  }
+};
+
+// export const getItemsSecure = async (key: string) => {
+//   try {
+//     const keys = await AsyncStorage.getAllKeys();
+//     const items = await AsyncStorage.multiGet(keys);
+//     return items.reduce((accumulator: Record<string, any>, [key, value]) => {
+//       accumulator[key] = value;
+//       return accumulator;
+//     }, {});
+//   } catch (error) {
+//     console.error('Error getting all items:', error);
+//     return {};
+//   }
+// };
 
 export const getItem = async (key: string) => {
   try {

@@ -6,13 +6,13 @@ import ThemedSaveAreaView from "@/components/ThemedSaveAreaView";
 import { InferType, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-import { setItem } from "@/components/utils/AsyncStorage";
+import { setItemSecure } from "@/components/utils/AsyncStorage";
 
 const schema = object({
   key: string().required(),
   text: string().required(),
 })
-
+// k.podosek@tu.kielce.pl grupa imię nazwisko nr sprawozdanie // jedna osoboa
 type DataRequest = InferType<typeof schema>;
 
 export default function AddData() {
@@ -28,15 +28,14 @@ export default function AddData() {
     try {
       const { key, text } = request
       setIsLoading(true);
-      await setItem(key, text);
+      await setItemSecure(key, text);
       setMessage(`Item {${key}: ${text}} added successfully.`);
       form.reset()
     } catch (error) {
-
+      console.log("Error")
     } finally {
       setIsLoading(false);
     }
-
   }
 
   return (
