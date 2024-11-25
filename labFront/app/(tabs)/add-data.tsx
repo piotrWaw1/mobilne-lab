@@ -53,7 +53,7 @@ export default function AddData() {
                 <TextInput
                   value={field.value}
                   onChangeText={field.onChange}
-                  className="border rounded-xl pl-2"
+                  className="border border-white text-white rounded-xl"
                   textContentType="emailAddress"
                   style={{ paddingLeft: 5, marginTop: 5 }}
                 />
@@ -72,7 +72,7 @@ export default function AddData() {
                 <TextInput
                   value={field.value}
                   onChangeText={field.onChange}
-                  className="border rounded-xl"
+                  className="border border-white text-white rounded-xl"
                   textContentType="password"
                   style={{ paddingLeft: 5, marginTop: 5 }}
                 />
